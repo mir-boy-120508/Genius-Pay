@@ -115,22 +115,25 @@
 </div>
 
 <script>
-    // 音声ファイルの読み込み（index.htmlと同じ場所に置く前提）
     const paySound = new Audio('いつもそばで.mp3');
 
     function openPay() {
         document.getElementById('payModal').style.display = 'flex';
         
-        // 音声を再生する
-        paySound.currentTime = 0; // 再生位置を頭に戻す
-        paySound.play().catch(error => {
-            console.log("音声を再生するには、画面を一度タップする必要があります:", error);
+        // 音声を再生
+        paySound.currentTime = 0;
+        paySound.play()
+        .then(() => {
+            alert("音が再生されました！"); // 成功したらアラートが出る
+        })
+        .catch(error => {
+            // 失敗したら原因をアラートで出す
+            alert("エラー発生: " + error.name + "\nメッセージ: " + error.message);
         });
     }
 
     function closePay() {
         document.getElementById('payModal').style.display = 'none';
-        // 戻るときに音を止めたい場合は以下を追加
         paySound.pause();
     }
 </script>
