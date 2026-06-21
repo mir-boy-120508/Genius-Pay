@@ -115,28 +115,30 @@
 </div>
 
 <script>
-    const paySound = new Audio('pay.mp3');
-
+    // 最初に Audio を作らず、ボタンが押された瞬間に作るようにします
     function openPay() {
         document.getElementById('payModal').style.display = 'flex';
         
-        // 音声を再生
-        paySound.currentTime = 0;
-        paySound.play()
-        .then(() => {
-            alert("音が再生されました！"); // 成功したらアラートが出る
-        })
-        .catch(error => {
-            // 失敗したら原因をアラートで出す
-            alert("エラー発生: " + error.name + "\nメッセージ: " + error.message);
-        });
+        try {
+            // ボタンが押されたこの瞬間に音源を読み込む（Safari対策）
+            const paySound = new Audio('song.mp3');
+            
+            // 読み込みと同時に再生
+            paySound.play()
+            .then(() => {
+                console.log("再生成功！");
+            })
+            .catch(error => {
+                alert("エラー発生: " + error.name + "\nメッセージ: " + error.message);
+            });
+        } catch (e) {
+            alert("オーディオ作成失敗: " + e.message);
+        }
     }
 
     function closePay() {
         document.getElementById('payModal').style.display = 'none';
-        paySound.pause();
     }
 </script>
-
 </body>
 </html>
