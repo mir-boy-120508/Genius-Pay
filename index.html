@@ -15,10 +15,9 @@
             align-items: center;
             height: 100vh;
         }
-        /* スマホの画面サイズを意識したコンテナ */
         .app-container {
             width: 100%;
-            max-width: 414px; /* iPhone Plusサイズ */
+            max-width: 414px;
             height: 100%;
             max-height: 896px;
             background-color: #fff;
@@ -74,7 +73,6 @@
         .pay-btn:active {
             transform: scale(0.95);
         }
-        /* 支払いモーダル（隠し画面） */
         .modal {
             display: none;
             position: absolute;
@@ -101,7 +99,7 @@
     <div class="main-content">
         <div class="balance-card">
             <div>残高</div>
-            <div class="balance-amount">¥1,000,000,000,000</div>
+            <div class="balance-amount">¥5,000</div>
         </div>
         <button class="pay-btn" onclick="openPay()">コード支払い</button>
     </div>
@@ -114,31 +112,26 @@
     </div>
 </div>
 
+<audio id="geniusSound" src="song.mp3" preload="auto"></audio>
+
 <script>
-    // 最初に Audio を作らず、ボタンが押された瞬間に作るようにします
     function openPay() {
+        // 画面を切り替える
         document.getElementById('payModal').style.display = 'flex';
         
-        try {
-            // ボタンが押されたこの瞬間に音源を読み込む（Safari対策）
-            const paySound = new Audio('song.mp3');
-            
-            // 読み込みと同時に再生
-            paySound.play()
-            .then(() => {
-                console.log("再生成功！");
-            })
-            .catch(error => {
-                alert("エラー発生: " + error.name + "\nメッセージ: " + error.message);
-            });
-        } catch (e) {
-            alert("オーディオ作成失敗: " + e.message);
-        }
+        // 音を鳴らす
+        const audio = document.getElementById('geniusSound');
+        audio.currentTime = 0;
+        audio.play().catch(error => {
+            alert("エラー: " + error.message);
+        });
     }
 
     function closePay() {
         document.getElementById('payModal').style.display = 'none';
+        document.getElementById('geniusSound').pause();
     }
 </script>
+
 </body>
 </html>
